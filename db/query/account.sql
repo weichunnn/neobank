@@ -12,6 +12,8 @@ SELECT * FROM accounts
 WHERE id = $1 LIMIT 1;
 
 -- name: GetAccountForUpdate :one
+-- for update -> to lock the rows returned as well as get a transaction lock on all the rows that reference the parent table (ensures that another transaction won't update they other key at the saem time breaking cosistency )
+-- no key -> weaker lock that tell psql to allow lock even when held by another contraint as we are not updating the id
 SELECT * FROM accounts
 WHERE id = $1 LIMIT 1 FOR NO KEY UPDATE;
 

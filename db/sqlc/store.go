@@ -55,8 +55,6 @@ type TransferTxResult struct {
 	ToEntry     Entry    `json:"to_entry"`
 }
 
-// ToDO: prevent deadlock
-
 func (store *Store) TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
@@ -96,23 +94,44 @@ func (store *Store) TransferTx(ctx context.Context, arg TranferTxParams) (Transf
 
 		// lock to prevent other transactions interfering with current operations
 		// fmt.Println(txName, "update account 1")
-		result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:     arg.FromAccountID,
-			Amount: -arg.Amount,
-		})
+		if arg.FromAccountID < arg.ToAccountID {
+			result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+				ID:     arg.FromAccountID,
+				Amount: -arg.Amount,
+			})
 
-		if err != nil {
-			return err
-		}
+			if err != nil {
+				return err
+			}
 
-		// fmt.Println(txName, "update account 2")
-		result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:     arg.ToAccountID,
-			Amount: arg.Amount,
-		})
+			// fmt.Println(txName, "update account 2")
+			result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+				ID:     arg.ToAccountID,
+				Amount: arg.Amount,
+			})
 
-		if err != nil {
-			return err
+			if err != nil {
+				return err
+			}
+		} else {
+			// fmt.Println(txName, "update account 2")
+			result.ToAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+				ID:     arg.ToAccountID,
+				Amount: arg.Amount,
+			})
+
+			if err != nil {
+				return err
+			}
+
+			result.FromAccount, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+				ID:     arg.FromAccountID,
+				Amount: -arg.Amount,
+			})
+
+			if err != nil {
+				return err
+			}
 		}
 
 		return nil
