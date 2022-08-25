@@ -93,6 +93,8 @@ SELECT id, owner, balance, currency, created_at FROM accounts
 WHERE id = $1 LIMIT 1 FOR NO KEY UPDATE
 `
 
+// for update -> to lock the rows returned as well as get a transaction lock on all the rows that reference the parent table (ensures that another transaction won't update they other key at the saem time breaking cosistency )
+// no key -> weaker lock that tell psql to allow lock even when held by another contraint as we are not updating the id
 func (q *Queries) GetAccountForUpdate(ctx context.Context, id int64) (Account, error) {
 	row := q.db.QueryRowContext(ctx, getAccountForUpdate, id)
 	var i Account
@@ -124,7 +126,7 @@ func (q *Queries) ListAccounts(ctx context.Context, arg ListAccountsParams) ([]A
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Account
+	items := []Account{}
 	for rows.Next() {
 		var i Account
 		if err := rows.Scan(
