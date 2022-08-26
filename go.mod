@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/fsnotify/fsnotify v1.5.4
 	github.com/gin-gonic/gin v1.8.1
+	github.com/golang/mock v1.4.4
 	github.com/lib/pq v1.10.6
 	github.com/spf13/viper v1.12.0
 	github.com/stretchr/testify v1.8.0

@@ -4,30 +4,37 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
+	_ "github.com/golang/mock/mockgen/model"
 )
 
+// create general method signature for different kind of store to connect to ie mock db / prod db
+type Store interface {
+	TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error)
+	Querier
+}
+
 // provide functions to exec db query and transactions
-type Store struct {
+type SQLStore struct {
 	*Queries // composition - all func will be available inside struct (queries stuct only support table operations)
 	db       *sql.DB
 }
 
-func NewStore(db *sql.DB) *Store {
-	return &Store{
+func NewStore(db *sql.DB) Store {
+	return &SQLStore{
 		db:      db,
 		Queries: New(db),
 	}
 }
 
 // pointer receiver
-func (store *Store) execTx(ctx context.Context, fn func(*Queries) error) error {
+func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) error {
 	// default isolation level - nil == read committed
 	// replace with &sql.TxOptions{}
 	tx, err := store.db.BeginTx(ctx, nil)
 	if err != nil {
 		return err
 	}
-
 	q := New(tx)
 	err = fn(q)
 	if err != nil {
@@ -55,7 +62,7 @@ type TransferTxResult struct {
 	ToEntry     Entry    `json:"to_entry"`
 }
 
-func (store *Store) TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error) {
+func (store *SQLStore) TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {
