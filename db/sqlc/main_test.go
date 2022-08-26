@@ -7,11 +7,7 @@ import (
 	"testing"
 
 	_ "github.com/lib/pq" // not calling an function hence add _ to prevent go formatter from removing package
-)
-
-const (
-	dbDriver = "postgres"
-	dbSource = "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable"
+	"github.com/weichunnn/neobank/util"
 )
 
 // can represent a db transaction or connection
@@ -19,9 +15,12 @@ var testQueries *Queries
 var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-	var err error
+	config, err := util.LoadConfig("../..")
+	if err != nil {
+		log.Fatal("error loading config", err)
+	}
 
-	testDB, err = sql.Open(dbDriver, dbSource)
+	testDB, err = sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db", err)
 	}
