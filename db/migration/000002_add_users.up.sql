@@ -3,7 +3,7 @@ create table "users" (
   "hashed_password" varchar not null,
   "full_name" varchar not null, 
   "email" varchar UNIQUE not null, 
-  "password_created_at" timestamptz not null default '0001-01-01 00:00:00Z',
+  "password_changed_at" timestamptz not null default '0001-01-01 00:00:00Z',
   "created_at" timestamptz not null default (now())
 );
 
