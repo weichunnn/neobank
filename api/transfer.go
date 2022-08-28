@@ -23,11 +23,7 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 		return
 	}
 
-	if !server.validAccount(ctx, req.FromAccountID, req.Currency) {
-		return
-	}
-
-	if !server.validAccount(ctx, req.ToAccountID, req.Currency) {
+	if !server.validAccount(ctx, req.FromAccountID, req.Currency) || !server.validAccount(ctx, req.ToAccountID, req.Currency) {
 		return
 	}
 
@@ -43,7 +39,7 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-
+	// success case
 	ctx.JSON(http.StatusOK, result)
 }
 

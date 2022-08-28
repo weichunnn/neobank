@@ -12,7 +12,7 @@ func TestTransferTx(t *testing.T) {
 	store := NewStore(testDB) // store with queries composition + db object
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
-	fmt.Println(" ** before tx ** :", account1.Balance, account2.Balance)
+	// fmt.Println(" ** before tx ** :", account1.Balance, account2.Balance)
 
 	n := 5
 	amount := int64(10)
@@ -87,7 +87,7 @@ func TestTransferTx(t *testing.T) {
 		require.Equal(t, account2.ID, toAccount.ID)
 
 		// check balance
-		fmt.Println(" ** after individual tx ** :", fromAccount.Balance, toAccount.Balance)
+		// fmt.Println(" ** after individual tx ** :", fromAccount.Balance, toAccount.Balance)
 
 		diff1 := account1.Balance - fromAccount.Balance
 		diff2 := toAccount.Balance - account2.Balance
@@ -108,7 +108,7 @@ func TestTransferTx(t *testing.T) {
 	updatedAccount2, err := store.GetAccount(context.Background(), account2.ID)
 	require.NoError(t, err)
 
-	fmt.Println(" ** after tx ** :", updatedAccount1.Balance, updatedAccount2.Balance)
+	// fmt.Println(" ** after tx ** :", updatedAccount1.Balance, updatedAccount2.Balance)
 	require.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
 	require.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
 
@@ -118,7 +118,7 @@ func TestTransferTxDeadlock(t *testing.T) {
 	store := NewStore(testDB) // store with queries composition + db object
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
-	fmt.Println(" ** before tx ** :", account1.Balance, account2.Balance)
+	// fmt.Println(" ** before tx ** :", account1.Balance, account2.Balance)
 
 	n := 10
 	amount := int64(10)
