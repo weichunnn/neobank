@@ -1,6 +1,6 @@
 # Neobank
 
-## Resources
+## resources
 
 ```
 https://medium.com/@annapeterson89/whats-the-point-of-golang-pointers-everything-you-need-to-know-ac5e40581d4d
@@ -11,9 +11,14 @@ https://stackoverflow.com/questions/38172661/what-is-the-meaning-of-and
 
 ```
 
-```
-psql debugging
-https://wiki.postgresql.org/wiki/Lock_Monitoring
+## psql debugging
 
-For NO KEY UPDATE -> Mark the current transaction as update (acquire lock) + tell psql that the UPDATE won't affect the key so it can open up
-```
+1. For NO KEY UPDATE -> Mark the current transaction as update (acquire lock) + tell psql that the UPDATE won't affect the key so it can open up
+2. Code on how to monitor lock -> [Monitor Lock](https://wiki.postgresql.org/wiki/Lock_Monitoring)
+
+## paseto vs jwt
+
+- lesser flexibility on ciper suite and algo selection (known insecure algo still valid)
+- trivial forgery
+  - set algo to 'none'
+  - change asymmetric also to symmetric algo (hacker sign token with the public key hence server will validate it as true)
