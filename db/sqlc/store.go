@@ -62,6 +62,16 @@ type TransferTxResult struct {
 	ToEntry     Entry    `json:"to_entry"`
 }
 
+/*
+problem and solution
+
+1. concurrent transaction causing updates to be unequal - solve by having a FOR UPDATE lock
+2. locking may cause deadlock (tx 1 depends on tx2 and vice verse) - solve by using NO KEY - allow concurrent transaction that does use the KEY COLUMN in their operations
+  - mainly to allow INSERT into TRANSFER (FK contrains block acc table) and SELECT FOR UDPATE needing to lock, now allowing them to run concurrently as we guarantee the key won't be changed
+  - LOCK by TX updates are still working
+
+3. Pairwise transaction deadlock (ie tx1 -> tx2, tx2 -> tx1 concurrent), solved by allowing smaller account id to run first (deadlock won't occur)
+*/
 func (store *SQLStore) TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
