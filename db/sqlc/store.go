@@ -98,6 +98,7 @@ func (store *SQLStore) TransferTx(ctx context.Context, arg TranferTxParams) (Tra
 		}
 
 		// lock to prevent other transactions interfering with current operations
+		// always need to acquire the lock of smaller account ID first
 		// fmt.Println(txName, "update account 1")
 		if arg.FromAccountID < arg.ToAccountID {
 			result.FromAccount, result.ToAccount, err = addMoney(ctx, q, arg.FromAccountID, -arg.Amount, arg.ToAccountID, arg.Amount)
