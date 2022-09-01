@@ -6,7 +6,8 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=simple_bank
-
+    networks:
+      - neobank
   api:
     build:
       context: .
@@ -15,8 +16,13 @@ services:
       - "8000:8000"
     environment:
       - DB_SOURCE=postgres://root:secret@postgres:5432/simple_bank?sslmode=disable
+    networks:
+      - neobank
     depends_on:
       - postgres
     # https://docs.docker.com/compose/compose-file/compose-file-v3/
     entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
     command: ["/app/main"]
+
+networks:
+  neobank:
