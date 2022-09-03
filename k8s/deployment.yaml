@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neobank-api-deployment-deployment
+  labels:
+    app: neobank-api # identify the object
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: neobank-api
+  template:
+    metadata:
+      labels:
+        app: neobank-api
+    spec:
+      containers:
+        - name: neobank-api
+          image: 050451698486.dkr.ecr.ap-southeast-1.amazonaws.com/neobank:4e7ac879ce6baef3f8c3a88391f663c1c538de2e
+          ports:
+            - containerPort: 8000
