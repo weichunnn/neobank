@@ -22,3 +22,10 @@ https://stackoverflow.com/questions/38172661/what-is-the-meaning-of-and
 - trivial forgery
   - set algo to 'none'
   - change asymmetric also to symmetric algo (hacker sign token with the public key hence server will validate it as true)
+
+## token generation shortcut
+
+```
+openssl rand -hex 64 | head -c 32 (128 char -> 32 char)
+pwgen -s 15 1 # generate random string of length 15 (-s to reduce entropy)
+```
