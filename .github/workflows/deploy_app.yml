@@ -26,7 +26,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Load secrets and add to app.env
-        run: aws secretsmanager get-secret-value --secret-id neo_bank --profile devops --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
+        run: aws secretsmanager get-secret-value --secret-id neo_bank --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
 
       - name: Build, tag, and push docker image to Amazon ECR
         env:
