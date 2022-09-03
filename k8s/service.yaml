@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neobank-api-service
+spec:
+  selector:
+    app: neobank-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: LoadBalancer
