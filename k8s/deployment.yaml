@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: neobank-api
-          image: 050451698486.dkr.ecr.ap-southeast-1.amazonaws.com/neobank:4e7ac879ce6baef3f8c3a88391f663c1c538de2e
+          image: 050451698486.dkr.ecr.ap-southeast-1.amazonaws.com/neobank:latest
           ports:
             - containerPort: 8000
