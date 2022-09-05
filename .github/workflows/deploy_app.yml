@@ -51,4 +51,9 @@ jobs:
           state-store: s3://neobank-state-store
 
       - name: Deploy image to Kops Cluster
-        run: kuebctl apply -f k8s/deployment.yaml
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/ingress.yaml
+          kubectl apply -f k8s/issuer.yaml
+        # without creating new instances of ingress controller and cert manager
