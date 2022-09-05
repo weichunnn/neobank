@@ -43,6 +43,7 @@ jobs:
           version: "v1.25.0 " # default is latest stable
         id: install
 
+        # requires both ec2 read access to get the AZ region and s3 read access to get the store
       - name: Setup Kops
         uses: hiberbee/github-action-kops@latest
         with:
@@ -52,8 +53,4 @@ jobs:
 
       - name: Deploy image to Kops Cluster
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/ingress.yaml
-          kubectl apply -f k8s/issuer.yaml
-        # without creating new instances of ingress controller and cert manager
+          kubectl apply -f k8s/
