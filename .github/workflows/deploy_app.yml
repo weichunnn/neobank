@@ -34,10 +34,10 @@ jobs:
           REPOSITORY: neobank
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t latest.
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t latest
           docker push -a $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-      - name: Install kubecrtl
+      - name: Install kubectl
         uses: azure/setup-kubectl@v3
         with:
           version: "v1.25.0 " # default is latest stable
