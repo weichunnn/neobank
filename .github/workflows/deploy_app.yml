@@ -34,7 +34,7 @@ jobs:
           REPOSITORY: neobank
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t latest
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t latest .
           docker push -a $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Install kubectl
