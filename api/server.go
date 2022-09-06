@@ -46,6 +46,7 @@ func (server *Server) setupRouter() {
 	authRoutes.GET("/accounts/:id", server.getAccount)
 	authRoutes.GET("/accounts", server.listAccount)
 	authRoutes.POST("/transfers", server.createTransfer)
+	authRoutes.POST("/tokens/renew_access", server.renewAccessToken)
 
 	router.POST("/users", server.createUser)
 	router.POST("/users/login", server.loginUser)
