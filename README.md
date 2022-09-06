@@ -35,3 +35,10 @@ pwgen -s 15 1 # generate random string of length 15 (-s to reduce entropy)
 ```
 sudo killall -HUP mDNSResponder
 ```
+
+## protobuf & gRPC
+
+```
+https://stackoverflow.com/questions/52146721/how-are-protocol-buffers-faster-than-xml-and-json
+https://stackoverflow.com/questions/13361951/binary-serialization-vs-json-vs-xml
+```
