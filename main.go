@@ -39,7 +39,9 @@ func runGrpcServer(config util.Config, store db.Store) {
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterNeoBankServer(grpcServer, server) // 2nd param needs to implement the function introduced in gRPC
-	reflection.Register(grpcServer)              //allow client to explore what function are available
+	// provides information about publicly-accessible gRPC services on a server,
+	// and assists clients at runtime to construct RPC requests and responses without precompiled service information
+	reflection.Register(grpcServer)
 
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
 	if err != nil {
