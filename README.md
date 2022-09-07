@@ -38,7 +38,12 @@ sudo killall -HUP mDNSResponder
 
 ## protobuf & gRPC
 
+1. In the wire format - JSON is a text based representation while protobuf is binary representation
+   1234567890 - 10 bytes (text)
+   1234567890 - 4 bytes (binary)
+
 ```
 https://stackoverflow.com/questions/52146721/how-are-protocol-buffers-faster-than-xml-and-json
 https://stackoverflow.com/questions/13361951/binary-serialization-vs-json-vs-xml
+https://stackoverflow.com/questions/68063826/storing-data-in-protobuf-vs-json
 ```
