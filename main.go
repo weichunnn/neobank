@@ -9,6 +9,7 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/lib/pq"
+	"github.com/rakyll/statik/fs"
 	"github.com/weichunnn/neobank/api"
 	db "github.com/weichunnn/neobank/db/sqlc"
 	"github.com/weichunnn/neobank/gapi"
@@ -17,6 +18,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
+
+	_ "github.com/weichunnn/neobank/docs/statik"
 )
 
 func main() {
@@ -88,9 +91,14 @@ func runGatewayServer(config util.Config, store db.Store) {
 
 	// server swagger docs
 	// debug: https://stackoverflow.com/a/27946132
-	fs := http.FileServer(http.Dir("./docs/swagger"))
+	statikFS, err := fs.New()
+	if err != nil {
+		log.Fatal("cannot create statik file system:", err)
+	}
+
+	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(statikFS))
 	// strip to make the route relative to root dir
-	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
+	mux.Handle("/swagger/", swaggerHandler)
 
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {

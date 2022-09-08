@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "NeoBank API",
-    "version": "v1.0",
+    "version": "v1.1",
     "contact": {
       "name": "Wei Chun",
       "url": "https://github.com/weichunnn/neobank",
@@ -27,6 +27,8 @@
   "paths": {
     "/v1/create_user": {
       "post": {
+        "summary": "Create new user",
+        "description": "Use this API to create new user",
         "operationId": "NeoBank_CreateUser",
         "responses": {
           "200": {
@@ -59,6 +61,8 @@
     },
     "/v1/login_user": {
       "post": {
+        "summary": "Login exisiting user",
+        "description": "Login user and generate both access and refresh token",
         "operationId": "NeoBank_LoginUser",
         "responses": {
           "200": {
