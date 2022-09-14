@@ -16,7 +16,8 @@ type Store interface {
 
 // provide functions to exec db query and transactions
 type SQLStore struct {
-	*Queries // composition - all func will be available inside struct (queries stuct only support table operations)
+	// https://stackoverflow.com/a/36706189
+	*Queries // embedding - all func will be available inside struct (queries stuct only support table operations)
 	db       *sql.DB
 }
 

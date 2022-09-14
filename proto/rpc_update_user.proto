@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+import "user.proto";
+
+// which golang package to generate the files to (defined as a subpackage)
+option go_package = "github.com/weichunnn/neobank/pb";
+
+message UpdateUserRequest {
+  string username = 1;
+  optional string full_name = 2;
+  optional string email = 3;
+  optional string password = 4;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+}
