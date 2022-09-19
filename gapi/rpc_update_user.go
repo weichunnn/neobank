@@ -15,9 +15,18 @@ import (
 )
 
 func (server *Server) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UpdateUserResponse, error) {
+	authPayload, err := server.authorizeUser(ctx) // not using interceptor as we need to implement this for both http and grpc server
+	if err != nil {
+		return nil, unauthenticatedError(err)
+	}
+
 	violations := validateUpdateUserRequest(req)
 	if violations != nil {
 		return nil, invalidArgumentError(violations)
+	}
+
+	if authPayload.Username != req.GetUsername() {
+		return nil, status.Errorf(codes.PermissionDenied, "cannot update other user's account details")
 	}
 
 	arg := db.UpdateUserParams{
