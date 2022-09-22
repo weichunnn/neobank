@@ -130,6 +130,7 @@ func runGatewayServer(config util.Config, store db.Store) {
 	}
 }
 
+// run http server
 func runGinServer(config util.Config, store db.Store) {
 	server, err := api.NewServer(config, store)
 	if err != nil {
