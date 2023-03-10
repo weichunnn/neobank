@@ -17,6 +17,8 @@ type Store interface {
 // provide functions to exec db query and transactions
 type SQLStore struct {
 	// https://stackoverflow.com/a/36706189
+	// if we embed the Queries struct as a pointer, we need to initialize the pointer separately when creating a new SQLStore instance,
+	// while if we embed the Queries struct directly, it is automatically initialized when creating a new SQLStore instance.
 	*Queries // embedding - all func will be available inside struct (queries stuct only support table operations)
 	db       *sql.DB
 }
@@ -24,7 +26,7 @@ type SQLStore struct {
 func NewStore(db *sql.DB) Store {
 	return &SQLStore{
 		db:      db,
-		Queries: New(db),
+		Queries: New(db), // initialize and embed queries
 	}
 }
 

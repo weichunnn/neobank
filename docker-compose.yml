@@ -21,6 +21,7 @@ services:
     depends_on:
       - postgres
     # https://docs.docker.com/compose/compose-file/compose-file-v3/
+    # https://medium.com/@krishnaregmi/wait-for-it-docker-compose-f0bac30f3357
     entrypoint: ["/app/wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
     command: ["/app/main"]
 
