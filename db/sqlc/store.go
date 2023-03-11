@@ -11,6 +11,7 @@ import (
 // create general method signature for different kind of store to connect to ie mock db / prod db
 type Store interface {
 	TransferTx(ctx context.Context, arg TranferTxParams) (TransferTxResult, error)
+	CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error)
 	Querier
 }
 
