@@ -17,6 +17,7 @@ import (
 	"github.com/weichunnn/neobank/api"
 	db "github.com/weichunnn/neobank/db/sqlc"
 	"github.com/weichunnn/neobank/gapi"
+	"github.com/weichunnn/neobank/mail"
 	"github.com/weichunnn/neobank/pb"
 	"github.com/weichunnn/neobank/util"
 	"github.com/weichunnn/neobank/worker"
@@ -57,7 +58,7 @@ func main() {
 	}
 
 	taskDistributor := worker.NewRedisTaskDistributor(redisOpt)
-	go runTaskProcessor(redisOpt, store)
+	go runTaskProcessor(config, redisOpt, store)
 	go runGatewayServer(config, store, taskDistributor)
 	runGrpcServer(config, store, taskDistributor)
 }
@@ -160,8 +161,9 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	}
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
 	log.Info().Msg("starting task processor")
 	err := taskProcessor.Start()
 	if err != nil {
