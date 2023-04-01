@@ -6,6 +6,7 @@ import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 import "rpc_update_user.proto";
 import "google/api/annotations.proto";
+import "rpc_verify_email.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 // which golang package to generate the files to (defined as a subpackage)
@@ -56,6 +57,16 @@ service NeoBank {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Login user and generate both access and refresh token";
       summary: "Login exisiting user";
+    };
+  }
+  rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse) {
+    option (google.api.http) = {
+      get: "/v1/verify_email"
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Verify user email address";
+      summary: "Verify email";
     };
   }
 }
